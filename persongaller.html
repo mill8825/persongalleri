@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      section {
+        display: grid;
+        grid-template-columns: repeat(5, 1fr);
+        grid-template-rows: repeat(3, 1fr);
+        grid-column-gap: 0px;
+        grid-row-gap: 0px;
+        grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+      }
+      img {
+        max-width: 100%;
+      }
+    </style>
+  </head>
+  <body>
+    <section>
+      <template>
+        <article>
+          <h2></h2>
+          <h2></h2>
+          <img src="" alt="" />
+          <p class="email"></p>
+        </article>
+      </template>
+    </section>
+    <script>
+      document.addEventListener("DOMContentLoaded", start);
+      console.log("Line Berner");
+      function start() {}
+
+      const url = "https://tema7-9c07.restdb.io/rest/persongalleri";
+      const key = "61fcf7e43f215f310a37be51";
+      const options = {
+        headers: {
+          "x-apikey": "61fcf7e43f215f310a37be51",
+        },
+      };
+
+      async function hentData() {
+        const resspons = await fetch(url, options);
+        const json = await resspons.json();
+        vis(json);
+      }
+      //   function vis(json) {
+      //     console.log(json);
+      //   }
+
+      function vis(persongalleri) {
+        const skabelon = document.querySelector("template");
+        const container = document.querySelector("section");
+
+        console.log(persongalleri);
+        persongalleri.forEach((enPerson) => {
+          const klon = skabelon.cloneNode(true).content;
+          klon.querySelector("h2").textContent += enPerson.fornavn;
+          klon.querySelector("h2").textContent += enPerson.efternavn;
+          klon.querySelector(".email").textContent = enPerson.email;
+          klon.querySelector("img").src = "faces/" + enPerson.profilbillede;
+          container.appendChild(klon);
+        });
+      }
+      hentData();
+    </script>
+  </body>
+</html>
